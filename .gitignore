@@ -2,4 +2,8 @@
 /*
 !/.gitignore
 !/README.md
+!/test.md
 !/images/
+!/docs/
+# 組版の中間ファイルにはテンプレートが入るので、公開するフォルダの中でも除外する
+.pubpdf/
