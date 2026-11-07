@@ -3,7 +3,7 @@ title: Pubpdf 使い方マニュアル
 subtitle: Markdown から本の体裁の PDF を作る
 author: Pubpdf プロジェクト
 date: 2026-11-07
-version: "0.8"
+version: "0.9"
 doc-number: PUBPDF-MAN-001
 history:
   - version: 0.1
@@ -30,6 +30,9 @@ history:
   - version: 0.8
     date: 2026-11-07
     changes: 段組み、ヘッダとフッタの文字、透かし、ロゴと組織名、テーマの色、表の体裁、コードの配色、PDF の文書情報と規格の説明を追加
+  - version: 0.9
+    date: 2026-11-07
+    changes: Mermaid にない図の説明と、URL の画像を読み込まないことの説明を追加
 pubpdf:
   cover: formal
   confidential: Confidential
@@ -65,6 +68,7 @@ PDF は、VS Code 拡張機能とコマンドラインのどちらからでも�
 | 両面印刷や製本を前提に組みたい、複数の md を1冊にしたい | [本として組む](05-book.md) |
 | 段組み、ヘッダとフッタの文字、透かし、色、PDF の規格を指定したい | [設定一覧](04-settings.md) |
 | 表、コード、数式、囲み、段組みの書き方を知りたい | [原稿の書き方](06-writing.md) |
+| ディレクトリ構造、グラフ、工程表などの図を描きたい | [原稿の書き方](06-writing.md#sec-figures) |
 | VS Code のボタンや設定パネルの使い方を知りたい | [VS Code での操作](07-vscode.md) |
 | エラーや警告が出た | [困ったときは](08-troubleshooting.md) |
 
