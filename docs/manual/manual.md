@@ -3,7 +3,7 @@ title: Pubpdf 使い方マニュアル
 subtitle: Markdown から本の体裁の PDF を作る
 author: Pubpdf プロジェクト
 date: 2026-11-07
-version: "0.9"
+version: "1.2"
 doc-number: PUBPDF-MAN-001
 history:
   - version: 0.1
@@ -33,6 +33,15 @@ history:
   - version: 0.9
     date: 2026-11-07
     changes: Mermaid にない図の説明と、URL の画像を読み込まないことの説明を追加
+  - version: "1.0"
+    date: 2026-11-08
+    changes: 承認欄、履歴の列、見出しの番号の形、節ごとの図表の番号、表の網掛け、セルの中の改行、HTML の表の説明を追加
+  - version: "1.1"
+    date: 2026-11-08
+    changes: スイムレーン、FTA、方眼の図、記入の指示の囲み、履歴の様式、ヘッダとフッタの罫線、表紙の枠、表の列の幅と文字の大きさの説明を追加
+  - version: "1.2"
+    date: 2026-11-08
+    changes: ER 図と画面遷移図の説明、Mermaid の図の見た目の説明、見本とテンプレートの案内を追加
 pubpdf:
   cover: formal
   confidential: Confidential
@@ -56,7 +65,7 @@ pubpdf:
 
 本書は、Markdown で書いた原稿を Pubpdf で PDF にする人のための手引きです。Quarto や Typst の知識がなくても読めるように書いています。
 
-PDF は、VS Code 拡張機能とコマンドラインのどちらからでも作れます。どちらも同じ仕組みで組むので、仕上がりは変わりません。
+PDF は、VS Code 拡張機能で作ります。
 
 ## 目的別の読み方
 

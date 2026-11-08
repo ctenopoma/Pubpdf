@@ -1,13 +1,13 @@
 # はじめての PDF
 
-VS Code で最初の PDF を作るまでの手順です。コマンドラインで作る方法は、この章の最後で説明します。
+VS Code で最初の PDF を作るまでの手順です。
 
 ## 必要なもの
 
 | ソフト | 用途 | 補足 |
 |---|---|---|
 | Quarto 1.10.18 以上 | 組版 | <https://quarto.org/> から入手します |
-| VS Code 1.90 以上 | 拡張機能 | コマンドラインだけで使うなら不要です |
+| VS Code 1.90 以上 | 拡張機能 | |
 | 日本語フォント | 本文 | Windows なら標準のフォントで動きます |
 | Edge か Chrome | Mermaid の図 | 図を使わなければ不要です |
 
@@ -15,10 +15,10 @@ VS Code で最初の PDF を作るまでの手順です。コマンドライン�
 
 ## 拡張機能を入れる
 
-Pubpdf のフォルダにある `extension/pubpdf-0.6.1.vsix` を VS Code に入れます。ターミナルで次のコマンドを実行するか、拡張機能のビューの「...」メニューから「VSIX からのインストール」を選びます。
+[最新の Release](https://github.com/ctenopoma/Pubpdf/releases/latest) から `pubpdf-1.0.0.vsix` をダウンロードして、VS Code に入れます。ダウンロードしたフォルダのターミナルで次のコマンドを実行するか、拡張機能のビューの「...」メニューから「VSIX からのインストール」を選びます。
 
 ```bash
-code --install-extension extension/pubpdf-0.6.1.vsix
+code --install-extension pubpdf-1.0.0.vsix
 ```
 
 入れたら、コマンドパレット(`Ctrl+Shift+P`)で `Pubpdf: 環境を確認` を実行します。Quarto、フォント、ブラウザの状態が一覧で出ます(Quarto が見つからないときは Quarto の行だけです)。Quarto かフォントが足りないときは、項目を選ぶと入手先が開きます。ブラウザは Mermaid を使うときだけ必要です。
@@ -66,16 +66,18 @@ pubpdf:
 
 Pubpdf のフォルダにある `test.md` は、代表的な機能を使った見本の原稿です。表紙、バージョン履歴、概要、値の差し込み、表と図の番号、数式の番号、ファイル名つきのコード、色付きの囲み、文字の寄せ、横向きのページ、改ページを使っています。PDF を作って、原稿と見比べてください。
 
+`samples` フォルダには、IPA の設計書の様式に沿った記入例があります。要件定義書、基本設計書、システム要求仕様書、システム・アーキテクチャ設計書、ソフトウェア要求仕様書、ソフトウェア・アーキテクチャ設計書、ソフトウェア詳細設計書、安全要求仕様書、ソフトウェア総合テスト仕様書・報告書の 9 つです。`templates` フォルダには、同じ様式の空のテンプレートがあり、記入の指示を `::: {.guide}` の囲みに書いています。
+
 ## 出力先を変える
 
-出力先は、`pubpdf.output` で指定できます。原稿のフォルダからの相対パスで、拡張子が `.pdf` のものだけを指定できます。受け取った原稿が他のファイルを上書きしないよう、原稿のフォルダの外は指定できません。外へ出すときは、VS Code の設定 `pubpdf.outputDirectory` か、コマンドラインの `--out` を使います。
+出力先は、`pubpdf.output` で指定できます。原稿のフォルダからの相対パスで、拡張子が `.pdf` のものだけを指定できます。受け取った原稿が他のファイルを上書きしないよう、原稿のフォルダの外は指定できません。外へ出すときは、VS Code の設定 `pubpdf.outputDirectory` を使います。
 
 ```yaml
 pubpdf:
   output: dist/sample.pdf
 ```
 
-## コマンドラインで作る
+<!-- ## コマンドラインで作る
 
 VS Code を使わないときは、Node.js で `prototype/build.mjs` を実行します。Node.js は <https://nodejs.org/> から入手します(v24 で確認しました)。この節のコマンドは、`prototype` フォルダがある場所で実行します。
 
@@ -107,3 +109,4 @@ Quarto は次の順に探します。VS Code では、設定 `pubpdf.quartoPath`
 ```bash
 node prototype/build.mjs sample.md --out dist/sample.pdf
 ```
+-->

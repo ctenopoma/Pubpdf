@@ -5,12 +5,20 @@
 | キー | 値 | 既定 | 内容 |
 |---|---|---|---|
 | `cover` | `none`、`simple`、`formal` | `none` | 表紙の型 |
+| `cover-frame` | `true`、`false` | `false` | 表紙を二重の線で囲む |
+| `approval-stamp` | `true`、`false` | `false` | 承認欄の押印欄 |
+| `history-number` | `true`、`false` | `false` | バージョン履歴の項番の列 |
+| `history-columns` | 列のリスト | なし | バージョン履歴の列の順と見出し |
+| `history-title` | 文字列 | `バージョン履歴` | バージョン履歴のページの題 |
+| `history-blank-rows` | 0 から 50 | `0` | バージョン履歴の手書き用の空の行 |
+| `guides` | `true`、`false` | `true` | 記入の指示(`::: {.guide}`)を出すか |
 | `confidential` | `false`、`true`、文字列 | `false` | 機密表示の文字 |
 | `confidential-position` | `none`、`top-right`、`bottom-left`、`both` | `top-right` | 機密表示の位置 |
 | `logo` | 原稿のフォルダの中の画像 | なし | 表紙のロゴ |
 | `watermark` | 文字列 | なし | 透かしの文字 |
 | `header-left`、`header-center`、`header-right` | 文字列 | 左は章の名前 | ヘッダの文字 |
 | `footer-left`、`footer-center`、`footer-right` | 文字列 | なし | フッタの文字 |
+| `header-rule`、`footer-rule` | `true`、`false` | `false` | ヘッダの下とフッタの上の罫線 |
 | `columns` | `1`、`2`、`3`、`4` | `1` | 本文の段数 |
 | `accent-color` | `"#0a7d5a"` の形の色 | なし | テーマの色 |
 | `table-style` | `grid`、`lines`、`booktabs`、`striped` | `grid` | 表の体裁 |
@@ -28,7 +36,8 @@
 | `page-number` | `book`、`right`、`center`、`total`、`none` | `center`。奇数ページ始まりでは `book` | ページ番号の出し方 |
 | `page-count` | `continuous`、`roman` | `continuous` | ページの数え方 |
 | `numbering` | `none`、`chapter`、`decimal` | `none` | 見出しの番号 |
-| `figure-numbering` | `chapter`、`continuous` | 見出しの番号があれば `chapter` | 図、表、コード、式の番号 |
+| `heading-format` | 番号の形のリスト | なし | 階層ごとの見出しの番号の形 |
+| `figure-numbering` | `chapter`、`section`、`continuous` | 見出しの番号があれば `chapter` | 図、表、コード、式の番号 |
 | `equation-numbering` | `all`、`labeled` | `all` | 番号を入れる式 |
 | `code-line-numbers` | `true`、`false` | `false` | コードの行番号 |
 | `chapter-break` | `true`、`false` | `true` | 章の前の改ページ |
@@ -65,6 +74,8 @@ pubpdf:
 : 表紙の型
 
 `formal` の表には、frontmatter に書いた項目だけが出ます。
+
+`cover-frame: true` で、表紙を二重の線の枠で囲みます(IPA の様式の表紙の形です)。
 
 ### ロゴと組織名
 
@@ -292,6 +303,7 @@ pubpdf:
 - `header-left` を指定しないときは、これまでどおり章の名前を出します。章の名前を消すときは `header-left: ""` と書きます。
 - 文字は Markdown として読まず、書いたとおりに出します。
 - 表紙と、自動で入る白紙には出しません。
+- `header-rule: true` でヘッダの下に、`footer-rule: true` でフッタの上に罫線を引きます。表紙には引きません。
 - 機密表示やページ番号と同じ場所を指定すると、少し空けて並べます。
 - 使えない `{名前}` は、警告を出して文字のまま出します。値のない `{version}` などは、警告を出して空にします。
 
@@ -312,16 +324,39 @@ pubpdf:
 
 : 見出しの番号の形
 
+`heading-format` で、階層ごとに番号の形を指定できます。設計書でよく使う「1. → 1.1 → (1) → ①」の形は、次のように書きます。`numbering` が `chapter` か `decimal` のときだけ使います。
+
+```yaml
+pubpdf:
+  numbering: decimal
+  heading-format: ["1.", "1.1", "(1)", "①"]
+```
+
+| 形の例 | 出る番号 |
+|---|---|
+| `1.` | 1. 2. 3. |
+| `第1章` | 第1章 第2章 |
+| `1.1`、`1-1` | 2.1 2.2 のように、上の階層の番号を含む |
+| `(1)`、`①`、`(ア)`、`a)` | 自分の階層の番号だけ |
+
+: 番号の形の書き方
+
+- 形の中の数える記号(`1`、`a`、`A`、`i`、`I`、`ア`、`あ`、`一`、`①` など)の数だけ、下の階層から番号を使います。`1.1` なら上の階層と自分、`(1)` なら自分だけです。
+- 指定より深い階層は、最後の形を使います。
+- 付録の章は「付録 A」です。上の階層の番号を含む形では、章の番号を A の形にします(`1.1` なら A.1)。
+- 形は 6 個まで、1 つ 20 文字までです。数える記号のない形は使えません。
+
 `figure-numbering` で、図、表、コード、定理、式の番号の振り方を選びます。
 
 | 値 | 例 | 振り方 |
 |---|---|---|
 | `chapter` | 図 1-1、表 2-1、(1-1) | 章ごとに振り直す |
+| `section` | 図 1.1-1、表 2.3-1、(1.1-1) | 節ごとに振り直す。章の最初の節より前は「図 1-1」 |
 | `continuous` | 図 1、表 2、(3) | 文書全体を通して数える |
 
 : 図表の番号の振り方
 
-既定は、見出しの番号があれば `chapter`、なければ `continuous` です。見出しの番号がないときに `chapter` を指定すると、警告を出して通し番号にします。
+既定は、見出しの番号があれば `chapter`、なければ `continuous` です。見出しの番号がないときに `chapter` か `section` を指定すると、警告を出して通し番号にします。
 
 序文や `{.unnumbered}` を付けた章は、番号のある章の外として扱います。その中の節にも番号を付けません。図と式には章の番号を付けず、番号を振り直さずに続けて数えます。
 

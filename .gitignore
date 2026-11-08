@@ -5,5 +5,10 @@
 !/test.md
 !/images/
 !/docs/
+!/samples/
+!/templates/
 # 組版の中間ファイルにはテンプレートが入るので、公開するフォルダの中でも除外する
 .pubpdf/
+# 見本とテンプレートは原稿だけを公開する(PDF は各自で組む)
+/samples/*.pdf
+/templates/*.pdf
