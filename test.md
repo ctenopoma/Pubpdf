@@ -80,11 +80,107 @@ YAML の値は本文にも差し込めます。この文書の版は {{< meta ve
 
 ## Mermaid の図
 
-コードブロックの言語を `mermaid` にすると、図になります。`%%|` の行で番号と題を付けられます。
+コードブロックの言語を `mermaid` にすると、図になります。`%%|` の行で番号と題を付けられます。Pubpdf は、Mermaid の図をほかの図と同じ色とフォントで描かせ、flowchart の線を角の丸い折れ線にします。
 
 ```mermaid
 %%| label: fig-flow
 %%| fig-cap: PDF ができるまで
+flowchart LR
+    A[Markdown の原稿] --> B[Pubpdf] --> C[PDF]
+```
+
+判断の菱形、subgraph の枠、破線の矢印は @fig-mermaid-flowchart のようになります。
+
+```mermaid
+%%| label: fig-mermaid-flowchart
+%%| fig-cap: 判断と subgraph のある flowchart
+flowchart TB
+  S([注文を受ける]) --> Q{在庫がある}
+  Q -- はい --> R[引き当てる]
+  Q -- いいえ --> P[生産を依頼する]
+  subgraph W[倉庫の作業]
+    R --> K[ピッキングする] --> H[梱包して出荷する]
+  end
+  P -. 完成したら .-> R
+```
+
+```mermaid
+%%| label: fig-mermaid-sequence
+%%| fig-cap: シーケンス図
+sequenceDiagram
+  actor U as 利用者
+  participant W as 画面
+  participant S as サーバ
+  U ->> W: 注文を確定する
+  W ->> S: 注文を登録する
+  activate S
+  alt 在庫がある
+    S -->> W: 受注番号
+  else 在庫がない
+    S -->> W: 回答納期
+  end
+  deactivate S
+  Note over W,S: 通信は HTTPS
+  W -->> U: 結果を表示する
+```
+
+```mermaid
+%%| label: fig-mermaid-class
+%%| fig-cap: クラス図
+classDiagram
+  direction LR
+  class Order["受注"] {
+    -受注番号
+    -受注日
+    +確定する()
+  }
+  class OrderLine["受注明細"] {
+    -数量
+    +引き当てる()
+  }
+  class Product["製品"] {
+    -製品コード
+  }
+  Order "1" *-- "1..*" OrderLine
+  OrderLine --> Product
+```
+
+```mermaid
+%%| label: fig-mermaid-state
+%%| fig-cap: 状態遷移図
+stateDiagram-v2
+  direction LR
+  [*] --> 受付: 登録
+  受付 --> 引当済: 引き当てる
+  引当済 --> 出荷済: 出荷する
+  受付 --> 取消: 取り消す
+  引当済 --> 取消: 取り消す
+  出荷済 --> [*]
+  取消 --> [*]
+```
+
+```mermaid
+%%| label: fig-mermaid-er
+%%| fig-cap: Mermaid の ER 図
+erDiagram
+  得意先 ||--o{ 受注 : 発注
+  受注 ||--|{ 受注明細 : 含む
+  製品 ||--o{ 受注明細 : 注文
+  受注 {
+    string 受注番号 PK
+    string 得意先コード FK
+    date 受注日
+  }
+```
+
+@fig-mermaid-er と同じ書き方で、言語を `er` にすると、Pubpdf が描きます(@fig-er)。
+
+`%%{init: {"theme": "default"}}%%` のように theme を選ぶと、Mermaid の元の見た目になります(@fig-mermaid-default)。
+
+```mermaid
+%%| label: fig-mermaid-default
+%%| fig-cap: theme を選んだ図(Mermaid の元の見た目)
+%%{init: {"theme": "default"}}%%
 flowchart LR
     A[Markdown の原稿] --> B[Pubpdf] --> C[PDF]
 ```
@@ -254,6 +350,45 @@ for i in range(3):
 
 見出しの後ろに `{#sec-名前}` と書くと、`@sec-名前` で参照できます。この節は @sec-reference です。番号を付けない見出しには `{.unnumbered}` と書きます。
 
+## 表の網掛けとセルの中の改行
+
+セルの中身を `[文字]{.shade}` と書くと、網掛けになります。`<br>` でセルの中を改行します。
+
+| 項目 | 内容 |
+|---|---|
+| [PU ID]{.shade} | PU-0101 |
+| [処理内容]{.shade} | 温度を読む<br>PV を更新する |
+
+: 網掛けと改行のある表
+
+## HTML の表
+
+`<table>` で書いた表も組めます。`rowspan` と `colspan` でセルを結合できます。
+
+<table>
+<tr><th rowspan="2">機能</th><th colspan="2">エンティティ</th></tr>
+<tr><th>顧客</th><th>受注</th></tr>
+<tr><td>受注の登録</td><td>R</td><td>C</td></tr>
+</table>
+
+: HTML で書いた表
+
+## 記入の指示と小さい文字の表
+
+テンプレートの書き方の説明は、`::: {.guide}` の囲みに書きます。設定の `guides: false` で組むと消えます。
+
+::: {.guide}
+＊ ここに本書の目的を書く。
+:::
+
+表の題に `.small` を書くと、その表の文字が小さくなります。`tbl-colwidths` で列の幅の比も決められます。
+
+| ID | 分類 | 内容 | 期待結果 | 結果 |
+|---|---|---|---|---|
+| T-01 | 起動 | 電源を入れて起動を確かめる | 3 秒以内に停止の状態になる | ○ |
+
+: 文字を小さくした表 {.small tbl-colwidths="[10,10,40,30,10]"}
+
 ## Typst を直接書く
 
 コードブロックの言語を `{=typst}` にすると、Typst の記法を直接書けます。設定や Markdown で足りないときに使います。
@@ -274,7 +409,7 @@ for i in range(3):
 
 : そのほかの記法
 
-# Mermaid にない図
+# Pubpdf が描く図
 
 コードブロックの言語を次の名前にすると、図になります。文字は検索でき、ブラウザも要りません。`%%| label: fig-名前` で参照でき、`%%| fig-cap: 題` で題と番号が付きます。
 
@@ -291,6 +426,11 @@ for i in range(3):
 | `data` | JSON と YAML の図 | JSON か YAML |
 | `network` | ネットワーク図 | ネットワークの行と字下げした機器の行 |
 | `usecase` | ユースケース図 | 「利用者: 機能, 機能」の行 |
+| `swimlane` | スイムレーンの業務フロー | 「レーン: 記号 文字」の行 |
+| `fta` | 故障の木(FTA) | 字下げ。下に事象のある事象は先頭に AND か OR |
+| `grid` | 帳票と画面の方眼 | 「行, 桁: 文字」の行 |
+| `er` | ER 図 | Mermaid の erDiagram と同じ。置き場所は表の形の行 |
+| `screenflow` | 画面遷移図 | 「画面 -> 操作: 画面」の行。置き場所は表の形の行 |
 
 : 図の種類
 
@@ -378,6 +518,84 @@ data: x..=.=.x A, B
   試験
     結合試験
 ```
+
+## 故障の木
+
+```fta
+%%| label: fig-fta
+%%| fig-cap: 葉の多い故障の木
+OR 搬送装置が<br>停止しない
+  AND 非常停止が効かない
+    非常停止ボタンの接点の溶着
+    安全リレーの故障
+    \OR 回路の誤配線
+  OR 制御が停止を指示しない
+    センサの故障
+    通信の途絶を検知しない
+    プログラムの誤り
+    ◇ 保守作業による改変
+  OR 駆動が止まらない
+    インバータの故障
+    ブレーキの摩耗
+    電磁接触器の溶着
+```
+
+基本の事象が多くて横に入らないので、@fig-fta はゲートの下に縦に並べています。名前の中の `<br>` は改行です。`OR` で始まる名前は、先頭に `\` を付けて書きます。
+
+## ER 図
+
+```er
+%%| label: fig-er
+%%| fig-cap: ER 図(er)
+| 社員   | 受注 | 受注明細 |
+| 得意先 |      | 製品     |
+社員 ||--o{ 受注 : 担当
+得意先 ||--o{ 受注 : 発注
+受注 ||--|{ 受注明細 : 含む
+製品 ||--o{ 受注明細 : 注文
+社員 |o..o{ 得意先 : 営業担当
+受注 ORDER_HEADER {
+  string 受注番号 PK
+  string 得意先コード FK
+  string 担当者コード FK
+  date 受注日
+}
+受注明細 ORDER_DETAIL {
+  受注番号 PK, FK
+  明細番号 PK
+  製品コード FK
+  数量
+}
+得意先 CUSTOMER {
+  得意先コード PK
+  得意先名
+}
+```
+
+先頭の `|` の行が箱の置き場所です。属性を書かない箱(社員、製品)は小さな箱になります。`..` の関係(営業担当)は破線になります。
+
+## 画面遷移図
+
+```screenflow
+%%| label: fig-screenflow
+%%| fig-cap: 画面遷移図
+| SC-01 ログイン |                | SC-90 エラー   |
+| SC-02 メニュー |                |                |
+| SC-03 注文入力 | SC-04 商品検索 | SC-05 注文履歴 |
+| RP-01 注文書   | EX-01 決済代行 |                |
+小画面: SC-04
+帳票: RP-01
+共通: SC-90
+外部: EX-01
+SC-01 -> ログイン: SC-02
+SC-02 -> 注文: SC-03, 履歴: SC-05
+SC-03 -> 検索: SC-04
+SC-04 -> 選択: SC-03
+SC-03 -> 確定: RP-01
+SC-03 ..> 支払い: EX-01
+```
+
+画面は窓の形、別ウィンドウの小画面は破線の枠、帳票は文書の形、どの画面からも移るエラーの画面は黄色、ほかのシステムは灰色の箱で描きます。
 
 # ページの制御
 
