@@ -45,7 +45,7 @@ Markdown の原稿から、Quarto と Typst で PDF を作る VS Code 拡張機�
 2. ダウンロードしたフォルダのターミナルで、次のコマンドを実行します。版が違うときは、ファイル名を読み替えてください。拡張機能のビューの「...」メニューから「VSIX からのインストール」を選んでも入れられます。
 
    ```bash
-   code --install-extension pubpdf-1.0.0.vsix
+   code --install-extension pubpdf-1.0.2.vsix
    ```
 
 3. VS Code のウィンドウを再読み込みします。
