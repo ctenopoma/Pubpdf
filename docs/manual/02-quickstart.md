@@ -15,10 +15,10 @@ VS Code で最初の PDF を作るまでの手順です。
 
 ## 拡張機能を入れる
 
-[最新の Release](https://github.com/ctenopoma/Pubpdf/releases/latest) から `pubpdf-1.0.0.vsix` をダウンロードして、VS Code に入れます。ダウンロードしたフォルダのターミナルで次のコマンドを実行するか、拡張機能のビューの「...」メニューから「VSIX からのインストール」を選びます。
+[最新の Release](https://github.com/ctenopoma/Pubpdf/releases/latest) から `pubpdf-1.0.2.vsix` をダウンロードして、VS Code に入れます。ダウンロードしたフォルダのターミナルで次のコマンドを実行するか、拡張機能のビューの「...」メニューから「VSIX からのインストール」を選びます。
 
 ```bash
-code --install-extension pubpdf-1.0.0.vsix
+code --install-extension pubpdf-1.0.2.vsix
 ```
 
 入れたら、コマンドパレット(`Ctrl+Shift+P`)で `Pubpdf: 環境を確認` を実行します。Quarto、フォント、ブラウザの状態が一覧で出ます(Quarto が見つからないときは Quarto の行だけです)。Quarto かフォントが足りないときは、項目を選ぶと入手先が開きます。ブラウザは Mermaid を使うときだけ必要です。
