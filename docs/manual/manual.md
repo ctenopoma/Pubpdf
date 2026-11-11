@@ -3,7 +3,7 @@ title: Pubpdf 使い方マニュアル
 subtitle: Markdown から本の体裁の PDF を作る
 author: Pubpdf プロジェクト
 date: 2026-11-07
-version: "1.3"
+version: "1.4"
 doc-number: PUBPDF-MAN-001
 history:
   - version: 0.1
@@ -45,6 +45,9 @@ history:
   - version: "1.3"
     date: 2026-11-09
     changes: H1 が 1 つでも題にしないことと、表紙がないときは title に書いた題だけを 1 ページ目に出すことを追記
+  - version: "1.4"
+    date: 2026-11-11
+    changes: 脚注を参考文献の一覧にする方法、大きなコードを 1 ページに収める設定、中間ファイルの置き場所の設定を追加
 pubpdf:
   cover: formal
   confidential: Confidential

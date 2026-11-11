@@ -40,6 +40,8 @@
 | `figure-numbering` | `chapter`、`section`、`continuous` | 見出しの番号があれば `chapter` | 図、表、コード、式の番号 |
 | `equation-numbering` | `all`、`labeled` | `all` | 番号を入れる式 |
 | `code-line-numbers` | `true`、`false` | `false` | コードの行番号 |
+| `code-fit` | `true`、`false` | `true` | 1 ページより高いコードを縮めて 1 ページに収める |
+| `code-fit-min` | 4 から 12(pt) | `6` | コードを縮めるときの文字の大きさの下限 |
 | `chapter-break` | `true`、`false` | `true` | 章の前の改ページ |
 | `book.odd-start` | `true`、`false` | 単一 md は `false`、合本は `true` | 奇数ページ始まり |
 | `book.gutter` | 数値(mm) | `8` | 綴じ代 |
@@ -47,6 +49,8 @@
 | `appendices` | ファイルのリスト | なし | 付録にする章 |
 | `bibliography` | 原稿のフォルダの中の `.bib` | なし | 文献のファイル |
 | `citation-style` | `ieee`、`sist02` など | `ieee` | 文献の書式 |
+| `footnotes` | `page`、`list` | `page` | 脚注をページの下に出すか、番号つきの一覧にまとめるか |
+| `footnotes-title` | 文字列 | `参考文献`(`bibliography` があれば `注`) | 脚注の一覧の題 |
 | `output` | 原稿のフォルダの中の `.pdf` | `<原稿名>.pdf` | 出力先 |
 | `font` | フォント名 | 自動 | 本文のフォント |
 | `font-heading` | フォント名 | 本文と同じ | 見出しと題のフォント |
@@ -156,6 +160,8 @@ pubpdf:
 ## 参考文献
 
 `bibliography` に文献のファイルを指定すると、本文から引用でき、文書の最後に文献の一覧が出ます。書き方は[原稿の書き方](06-writing.md#sec-citations)を参照してください。
+
+一覧を文書の途中に出すときは、出したい位置に `::: {#refs}` と `:::` の 2 行を書きます。脚注を参考文献の一覧にまとめる方法(`footnotes: list`)は、[原稿の書き方](06-writing.md#sec-footnote-list)を参照してください。
 
 ```yaml
 pubpdf:
@@ -378,6 +384,19 @@ pubpdf:
 ## コードの行番号
 
 `code-line-numbers: true` にすると、すべてのコードに行番号を付けます。コードごとに指定する方法は、[原稿の書き方](06-writing.md#sec-code)を参照してください。
+
+## 大きなコード
+
+1 ページより高いコードは、文字を小さくして 1 ページに収めます。縮める下限は `code-fit-min`(pt)で、既定は 6 です。下限まで縮めても入らないコードは、元の大きさのまま、ページをまたいで組みます。
+
+```yaml
+pubpdf:
+  code-fit: true      # false なら縮めずにページをまたぐ
+  code-fit-min: 7
+```
+
+- 縮めたコードは、新しいページの先頭から組みます。前のページの下が空くことがあります。
+- 1 ページに入るコードは縮めません。
 
 ## 章の前の改ページ
 
