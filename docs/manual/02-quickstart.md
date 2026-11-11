@@ -15,10 +15,10 @@ VS Code で最初の PDF を作るまでの手順です。
 
 ## 拡張機能を入れる
 
-[最新の Release](https://github.com/ctenopoma/Pubpdf/releases/latest) から `pubpdf-1.0.2.vsix` をダウンロードして、VS Code に入れます。ダウンロードしたフォルダのターミナルで次のコマンドを実行するか、拡張機能のビューの「...」メニューから「VSIX からのインストール」を選びます。
+[最新の Release](https://github.com/ctenopoma/Pubpdf/releases/latest) から `pubpdf-1.1.1.vsix` をダウンロードして、VS Code に入れます。ダウンロードしたフォルダのターミナルで次のコマンドを実行するか、拡張機能のビューの「...」メニューから「VSIX からのインストール」を選びます。
 
 ```bash
-code --install-extension pubpdf-1.0.2.vsix
+code --install-extension pubpdf-1.1.1.vsix
 ```
 
 入れたら、コマンドパレット(`Ctrl+Shift+P`)で `Pubpdf: 環境を確認` を実行します。Quarto、フォント、ブラウザの状態が一覧で出ます(Quarto が見つからないときは Quarto の行だけです)。Quarto かフォントが足りないときは、項目を選ぶと入手先が開きます。ブラウザは Mermaid を使うときだけ必要です。
@@ -76,37 +76,3 @@ Pubpdf のフォルダにある `test.md` は、代表的な機能を使った�
 pubpdf:
   output: dist/sample.pdf
 ```
-
-<!-- ## コマンドラインで作る
-
-VS Code を使わないときは、Node.js で `prototype/build.mjs` を実行します。Node.js は <https://nodejs.org/> から入手します(v24 で確認しました)。この節のコマンドは、`prototype` フォルダがある場所で実行します。
-
-```bash
-cd prototype
-npm install
-cd ..
-node prototype/build.mjs doctor
-node prototype/build.mjs sample.md
-```
-
-`npm install` は最初の1回だけです。`doctor` は環境を確認するコマンドです。`sample.md` は `prototype` フォルダと同じ場所に置くか、パスを指定してください。足りないものがなければ、`doctor` は次のように表示します。
-
-```text
-Quarto: 1.10.18 (C:\Program Files\Quarto\bin\quarto.exe)
-フォント: Noto Sans JP
-ブラウザ: C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe
-結果: PDF を作成できます
-```
-
-Quarto は次の順に探します。VS Code では、設定 `pubpdf.quartoPath` が最優先です。
-
-1. 環境変数 `PUBPDF_QUARTO` で指定した実行ファイル
-2. 環境変数 `PATH`
-3. ホームフォルダの `.local/quarto/bin`(Windows なら `C:\Users\<名前>\.local\quarto\bin`)
-
-出力先は `--out` で指定でき、`pubpdf.output` より優先されます。拡張子は `.pdf` にします。相対パスは実行場所ではなく、原稿のフォルダが基準です。
-
-```bash
-node prototype/build.mjs sample.md --out dist/sample.pdf
-```
--->

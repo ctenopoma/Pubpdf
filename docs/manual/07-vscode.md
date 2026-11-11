@@ -22,7 +22,7 @@
 - 実行中にもう一度実行すると、前の処理を止めて最新の内容で組み直します。
 - 設定 `pubpdf.renderOnSave` をオンにすると、保存したときに PDF を作り直します。対象は `pubpdf:` のある原稿と合本の章です。
 - PDF を他のアプリで開いていて上書きできないときは、原因を知らせます。
-- ワークスペースのフォルダの直下に `.git` があるときは、最初に PDF ができた後に、`.pubpdf/` を `.gitignore` に追加するかを尋ねます。`pubpdf.renderOnSave` で作ったときは尋ねません。
+- ワークスペースのフォルダの直下に `.git` があるときは、最初に PDF ができた後に、`.pubpdf/` を `.gitignore` に追加するかを尋ねます。`pubpdf.renderOnSave` で作ったときと、`pubpdf.buildDirectory` が `global` のときは尋ねません。
 - 信頼していないワークスペース(制限モード)では、拡張機能は動きません。
 
 ## 設定パネル
@@ -72,6 +72,8 @@ VS Code の設定は、frontmatter に書いていない項目の既定値にな
 | `pubpdf.listOfFigures` | `list-of-figures`(`on`、`off`) |
 | `pubpdf.listOfTables` | `list-of-tables`(`on`、`off`) |
 | `pubpdf.citationStyle` | `citation-style` |
+| `pubpdf.footnotes` | `footnotes` |
+| `pubpdf.footnotesTitle` | `footnotes-title` |
 | `pubpdf.confidential.text` | `confidential` |
 | `pubpdf.confidential.position` | `confidential-position` |
 | `pubpdf.watermark` | `watermark` |
@@ -88,6 +90,8 @@ VS Code の設定は、frontmatter に書いていない項目の既定値にな
 | `pubpdf.figureNumbering` | `figure-numbering`(`auto` は既定に任せます) |
 | `pubpdf.equationNumbering` | `equation-numbering` |
 | `pubpdf.codeLineNumbers` | `code-line-numbers`(`on`、`off`) |
+| `pubpdf.codeFit` | `code-fit`(`on`、`off`) |
+| `pubpdf.codeFitMin` | `code-fit-min` |
 | `pubpdf.fontSize` | `font-size` |
 | `pubpdf.lineSpacing` | `line-spacing` |
 | `pubpdf.firstLineIndent` | `first-line-indent`(`on`、`off`) |
@@ -112,6 +116,7 @@ VS Code の設定は、frontmatter に書いていない項目の既定値にな
 |---|---|
 | `pubpdf.quartoPath` | Quarto の実行ファイルのパス |
 | `pubpdf.outputDirectory` | PDF の出力フォルダ。frontmatter の `output` が優先されます |
+| `pubpdf.buildDirectory` | 中間ファイル(`.pubpdf`)の置き場所。`workspace`(既定)はワークスペースのフォルダの直下、`document` は原稿と同じフォルダ、`global` は拡張機能の保管場所(プロジェクトのフォルダには作りません) |
 | `pubpdf.renderOnSave` | 保存時に PDF を作り直す |
 
 : VS Code だけの設定
