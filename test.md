@@ -29,7 +29,13 @@ pubpdf:
   # code-line-numbers: true      # すべてのコードに行番号を付ける
   # list-of-figures: true        # 目次の後に図の一覧を出す
   # list-of-tables: true         # 目次の後に表の一覧を出す
-  # bibliography: refs.bib       # 文献のファイル(別に用意する)。本文に [@キー] と書いて引用する
+  bibliography: test.bib         # 文献のファイル(test.md と同じフォルダに置く)。本文に [@キー] と書いて引用する
+  # citation-style: sist02       # 文献の書式。ieee([1])/ sist02((1))/ apa など
+  # footnotes: list              # 脚注をページの下ではなく、番号つきの一覧(参考文献)にまとめる
+  # table-fit: true              # 短い表を版面いっぱいに広げず、中身の幅に合わせる
+  # code-display: show           # コードの見せ方。auto(そのまま、縮める、添付の順)/ show / fit / attach
+  # code-attach: named           # 表示したコードも添付するか。all / named(ファイル名のあるものだけ)/ none
+  # code-attach-note: "{name} を参照"  # 添付に切り替えたコードの場所に出す文。{name} と {lines} が埋まる
   # columns: 2                   # 本文を 2 段に組む
   # watermark: 下書き            # 背景に斜めの文字を出す
   # logo: docs/manual/img/vscode-panel.png  # 表紙のロゴ
@@ -70,6 +76,16 @@ YAML の値は本文にも差し込めます。この文書の版は {{< meta ve
 
 @tbl-settings は、題の行の `{#tbl-settings}` を参照しています。
 
+表は版面の幅いっぱいに広げます。中身の短い表は、題に `.fit` を書くと中身の幅になります(@tbl-fit)。文書のすべての表をそうするには、YAML の `table-fit: true` を使います。
+
+| 記号 | 意味 |
+|---|---|
+| ○ | 合格 |
+| × | 不合格 |
+| － | 対象外 |
+
+: 中身の幅に合わせた表 {#tbl-fit .fit}
+
 ## 図の番号と寄せ
 
 画像の後ろの `{ }` に、ID、幅、寄せを書けます。
@@ -77,6 +93,12 @@ YAML の値は本文にも差し込めます。この文書の版は {{< meta ve
 ![VS Code の設定パネル](docs/manual/img/vscode-panel.png){#fig-panel width=60% fig-align="center"}
 
 @fig-panel のように、図も番号で参照できます。
+
+幅は、Zenn の書き方で px の数でも指定できます(`![説明](パス =240x)`)。`=50%x` は本文の幅に対する割合です。図のブロック(Mermaid と Pubpdf が描く図)では、先頭に `%%| width: 240` か `%%| width: 50%` と書きます。
+
+![](docs/manual/img/vscode-preview.png =240x)
+
+題のない画像も中央に置きます。左や右に寄せるときは `{fig-align="left"}` を付けます(図のブロックでは `%%| fig-align: left`)。
 
 ## Mermaid の図
 
@@ -211,11 +233,21 @@ $$
 
 ## ファイル名つきのコード
 
-言語名の後に `: ファイル名` を書くと、左上にファイル名が出ます。
+言語名の後に `: ファイル名` を書くと、左上にファイル名が出ます。コードは PDF の添付ファイルにもなり、Acrobat Reader の「添付ファイル」などから、書いたとおりの文字(字下げを含む)で取り出せます。このコードは `app.py` という名前で添付しています。
 
 ```python: app.py
 def greet(name):
     return f"こんにちは、{name} さん"
+```
+
+`include` にファイルのパスを書くと、ファイルの中身をコードとして載せます。次のコードは、同じフォルダの `test-files/hello.py` を参照しています。
+
+```{.python include="test-files/hello.py"}
+```
+
+長いコードは、文字を縮めて 1 ページに収め、それでも入らなければ添付ファイルに切り替えます(`code-display: auto`)。`.attach` を書くと、大きさによらず添付ファイルにします。添付に切り替えたコードの場所には、既定では「このコード(10 行)は、添付ファイル … にあります。」の文が出ます。文は YAML の `code-attach-note` で書き換えられ、コードごとには `note` で上書きできます(`{name}` は添付の名前、`{lines}` は行数)。
+
+```{.python .attach include="test-files/hello.py" filename="hello-attach.py" note="コード({lines} 行)は、添付ファイル {name} 参照"}
 ```
 
 ## 行番号つきのコード
@@ -225,6 +257,16 @@ def greet(name):
 ```{.python code-line-numbers="true"}
 for i in range(3):
     print(i)
+```
+
+## 差分(diff)
+
+言語名を `diff` にすると、`+` の行に薄い緑、`-` の行に薄い赤の背景が付きます。Zenn の ```` ```diff js ```` や Qiita の ```` ```diff_javascript ```` のように言語名も書くと、その言語で色分けします。
+
+```diff js:price.js
+ const total = items.length;
+-const tax = 0.08;
++const tax = 0.10;
 ```
 
 ## 色付きの囲み
@@ -296,6 +338,22 @@ for i in range(3):
 
 : 文字の修飾
 
+文中のコードには、`print()` のように薄い灰色の角丸の背景が付きます(`inline-code-background: false` で消せます)。`:smile:` のような絵文字の名前は、絵文字(:smile:)になります。
+
+## パスと URL
+
+共有フォルダのパスや長い URL は、文中のコードに `{.path}` を付けると、背景と枠が付き、`\` と `/` の後ろで改行できます。`\` は書いたとおりに出ます。`\\fileserver\share\設計\2026\基本設計書.docx`{.path} に置きます。URL はリンクになります。`https://github.com/ctenopoma/Pubpdf/releases/latest`{.path} から入手します。
+
+## HTML のタグ
+
+Qiita や Zenn 向けに書いた HTML のタグも使えます。<kbd>Ctrl</kbd>+<kbd>S</kbd> で保存します(`<kbd>`)。x<sup>2</sup> と H<sub>2</sub>O、<mark>蛍光ペン</mark>、<font color="red">赤い字</font> も書けます。
+
+<details><summary>HTML の折りたたみ</summary>
+
+`<details><summary>題</summary>` は、`:::details 題` と同じ灰色の囲みになります。
+
+</details>
+
 ## 脚注とチェックリスト
 
 文の途中に `^[脚注の文]` と書くと、ページの下に脚注が出ます^[これが脚注の文です。]。
@@ -304,6 +362,33 @@ for i in range(3):
 
 - [x] 終わった作業
 - [ ] まだの作業
+
+## 文献の引用と参考文献
+
+YAML の `bibliography` に `.bib` のファイルを指定すると、本文に `[@キー]` と書いて引用できます。この見本は、同じフォルダの `test.bib` を使っています。組版の教科書 [@knuth1984] と、Markdown の仕様 [@commonmark] を引用しました。ページも書けます [@knuth1984, p. 10]。複数をまとめて引用することもできます [@commonmark; @sigmaframe2013]。
+
+```markdown
+組版の教科書 [@knuth1984] と、Markdown の仕様 [@commonmark] を引用しました。
+```
+
+```text
+@book{knuth1984,
+  title = {The TeXbook},
+  author = {Knuth, Donald E.},
+  year = {1984},
+  publisher = {Addison-Wesley},
+}
+```
+
+引用した文献は、「参考文献」の一覧に番号順に並びます。一覧は、`::: {#refs}` と `:::` の 2 行を書いた位置に出ます。書かなければ文書の最後に出ます。この見本では、最後の章「ページの制御」の前に置いています。引用の形は `citation-style` で選びます(既定は [1] の形の IEEE)。
+
+文献のファイルを用意しないときは、脚注で引用を書けます。YAML に `footnotes: list` と書くと、脚注をページの下ではなく番号つきの一覧にまとめ、本文には [1] の形で番号を出します(Zenn の脚注と同じ書き方です)。同じ脚注を何度引いても同じ番号です。
+
+```markdown
+組版の教科書[^tex]を参照しました。
+
+[^tex]: D. E. Knuth, The TeXbook, Addison-Wesley, 1984.
+```
 
 ## 注意書きの囲み
 
@@ -402,6 +487,7 @@ for i in range(3):
 | 書き方 | 内容 |
 |---|---|
 | `[@キー]` | 文献の引用。YAML の `bibliography` に `.bib` ファイルを指定します |
+| `::: {#refs}` と `:::` | 参考文献の一覧を置く位置 |
 | `# 見出し {.appendix}` | 付録にします。「付録 A」と番号が付きます |
 | `{{< meta version >}}` | YAML の値を差し込みます |
 | `{{< pagebreak >}}` | 改ページします |
@@ -596,6 +682,9 @@ SC-03 ..> 支払い: EX-01
 ```
 
 画面は窓の形、別ウィンドウの小画面は破線の枠、帳票は文書の形、どの画面からも移るエラーの画面は黄色、ほかのシステムは灰色の箱で描きます。
+
+::: {#refs}
+:::
 
 # ページの制御
 
