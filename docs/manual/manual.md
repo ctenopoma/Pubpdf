@@ -3,7 +3,7 @@ title: Pubpdf 使い方マニュアル
 subtitle: Markdown から本の体裁の PDF を作る
 author: Pubpdf プロジェクト
 date: 2026-11-07
-version: "1.4"
+version: "1.6"
 doc-number: PUBPDF-MAN-001
 history:
   - version: 0.1
@@ -48,7 +48,14 @@ history:
   - version: "1.4"
     date: 2026-11-11
     changes: 脚注を参考文献の一覧にする方法、大きなコードを 1 ページに収める設定、中間ファイルの置き場所の設定を追加
+  - version: "1.5"
+    date: 2026-11-11
+    changes: 表を中身の幅に合わせる指定(.fit、.full、table-fit)、コードの添付(code-attach)、コードの見せ方(code-display)、添付に切り替えたコードの文(code-attach-note)、コードのファイルの参照(include)を追加。本書の短い表を中身の幅にした
+  - version: "1.6"
+    date: 2026-11-12
+    changes: 文中のコードの背景(inline-code-background)、パスと URL の書き方、画像と図の幅の指定、差分(diff)の表示、HTML のタグ、Qiita と Zenn の記法(数式、画像の題、絵文字、囲みの題)、空行の抜けの警告、\ で始まる語と生の URL の扱いを追加。画像と図は既定で中央に置き、fig-align で寄せを変えられることを追記
 pubpdf:
+  table-fit: true      # 短い表は中身の幅に合わせる
   cover: formal
   confidential: Confidential
   confidential-position: both

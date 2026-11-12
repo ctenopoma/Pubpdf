@@ -90,8 +90,10 @@ VS Code の設定は、frontmatter に書いていない項目の既定値にな
 | `pubpdf.figureNumbering` | `figure-numbering`(`auto` は既定に任せます) |
 | `pubpdf.equationNumbering` | `equation-numbering` |
 | `pubpdf.codeLineNumbers` | `code-line-numbers`(`on`、`off`) |
-| `pubpdf.codeFit` | `code-fit`(`on`、`off`) |
+| `pubpdf.codeDisplay` | `code-display` |
 | `pubpdf.codeFitMin` | `code-fit-min` |
+| `pubpdf.codeAttach` | `code-attach` |
+| `pubpdf.codeAttachNote` | `code-attach-note` |
 | `pubpdf.fontSize` | `font-size` |
 | `pubpdf.lineSpacing` | `line-spacing` |
 | `pubpdf.firstLineIndent` | `first-line-indent`(`on`、`off`) |
@@ -101,6 +103,8 @@ VS Code の設定は、frontmatter に書いていない項目の既定値にな
 | `pubpdf.accentColor` | `accent-color` |
 | `pubpdf.tableStyle` | `table-style` |
 | `pubpdf.codeTheme` | `code-theme` |
+| `pubpdf.inlineCodeBackground` | `inline-code-background`(`on`、`off`) |
+| `pubpdf.tableFit` | `table-fit`(`on`、`off`) |
 | `pubpdf.pdfStandard` | `pdf-standard` |
 | `pubpdf.font.body` | `font` |
 | `pubpdf.font.heading` | `font-heading` |
