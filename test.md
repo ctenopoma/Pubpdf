@@ -33,9 +33,13 @@ pubpdf:
   # citation-style: sist02       # 文献の書式。ieee([1])/ sist02((1))/ apa など
   # footnotes: list              # 脚注をページの下ではなく、番号つきの一覧(参考文献)にまとめる
   # table-fit: true              # 短い表を版面いっぱいに広げず、中身の幅に合わせる
-  # code-display: show           # コードの見せ方。auto(そのまま、縮める、添付の順)/ show / fit / attach
-  # code-attach: named           # 表示したコードも添付するか。all / named(ファイル名のあるものだけ)/ none
-  # code-attach-note: "{name} を参照"  # 添付に切り替えたコードの場所に出す文。{name} と {lines} が埋まる
+  # code-display: show           # コードの見せ方。auto(そのまま、縮める、付録の順)/ show / fit / appendix / attach
+  # code-appendix-title: ソースコード  # 1 ページに入らないコードを移す付録の題
+  # code-appendix-note: "{ref} を参照"  # 付録へ移したコードの場所に出す文。{ref}、{name}、{lines} が埋まる
+  # code-attach: named           # 表示したコードも PDF に添付するか。none(既定)/ all / named(ファイル名のあるものだけ)
+  # lint:                        # VS Code で書いている間の文章の点検(組版には使わない)
+  #   style: desumasu            # 文体。dearu(である調)/ desumasu / consistent / off
+  #   spacing: no-space          # 和文と英数字の間の空白を知らせる
   # columns: 2                   # 本文を 2 段に組む
   # watermark: 下書き            # 背景に斜めの文字を出す
   # logo: docs/manual/img/vscode-panel.png  # 表紙のロゴ
@@ -233,7 +237,7 @@ $$
 
 ## ファイル名つきのコード
 
-言語名の後に `: ファイル名` を書くと、左上にファイル名が出ます。コードは PDF の添付ファイルにもなり、Acrobat Reader の「添付ファイル」などから、書いたとおりの文字(字下げを含む)で取り出せます。このコードは `app.py` という名前で添付しています。
+言語名の後に `: ファイル名` を書くと、左上にファイル名が出ます。YAML で `code-attach: named` にすると、このコードを `app.py` という名前で PDF の添付ファイルにもでき、書いたとおりの文字(字下げを含む)で取り出せます。添付ファイルのある PDF は会社によっては受け取れないので、既定では添付しません。
 
 ```python: app.py
 def greet(name):
@@ -245,9 +249,9 @@ def greet(name):
 ```{.python include="test-files/hello.py"}
 ```
 
-長いコードは、文字を縮めて 1 ページに収め、それでも入らなければ添付ファイルに切り替えます(`code-display: auto`)。`.attach` を書くと、大きさによらず添付ファイルにします。添付に切り替えたコードの場所には、既定では「このコード(10 行)は、添付ファイル … にあります。」の文が出ます。文は YAML の `code-attach-note` で書き換えられ、コードごとには `note` で上書きできます(`{name}` は添付の名前、`{lines}` は行数)。
+長いコードは、文字を縮めて 1 ページに収め、それでも入らなければ文書の最後の付録へ移します(`code-display: auto`)。`.appendix` を書くと、大きさによらず付録へ移します。付録へ移したコードの場所には、既定では「このコード(10 行)は、付録の A.1 に載せています。」の文が出ます。文は YAML の `code-appendix-note` で書き換えられ、コードごとには `note` で上書きできます(`{ref}` は付録の節へのリンク、`{name}` はファイル名、`{lines}` は行数)。
 
-```{.python .attach include="test-files/hello.py" filename="hello-attach.py" note="コード({lines} 行)は、添付ファイル {name} 参照"}
+```{.python .appendix include="test-files/hello.py" filename="hello-appendix.py" note="{name}({lines} 行)は {ref} に載せています。"}
 ```
 
 ## 行番号つきのコード
@@ -358,6 +362,11 @@ Qiita や Zenn 向けに書いた HTML のタグも使えます。<kbd>Ctrl</kbd
 
 文の途中に `^[脚注の文]` と書くと、ページの下に脚注が出ます^[これが脚注の文です。]。
 
+`[^名前]` と書いて、本文の後に `[^名前]: 脚注の文` を書くこともできます。同じ箇所で複数の脚注を引くときは `[^a,b]` と並べます[^first,second]。
+
+[^first]: 並べた脚注の 1 つ目です。
+[^second]: 並べた脚注の 2 つ目です。
+
 行の先頭に `- [x]` か `- [ ]` と書くと、チェックリストになります。
 
 - [x] 終わった作業
@@ -437,12 +446,14 @@ YAML の `bibliography` に `.bib` のファイルを指定すると、本文に
 
 ## 表の網掛けとセルの中の改行
 
-セルの中身を `[文字]{.shade}` と書くと、網掛けになります。`<br>` でセルの中を改行します。
+セルの中身を `[文字]{.shade}` と書くと、網掛けになります。`<br>` でセルの中を改行します。`<br>` で区切った行を `- ` で始めると箇条書き、`1. ` で始めると番号つきのリストになります。
 
 | 項目 | 内容 |
 |---|---|
 | [PU ID]{.shade} | PU-0101 |
 | [処理内容]{.shade} | 温度を読む<br>PV を更新する |
+| [確認]{.shade} | 次の 2 点<br>- 上限を超えていない<br>- 下限を下回っていない |
+| [手順]{.shade} | 1. 読む<br>2. 比べる<br>3. 記録する |
 
 : 網掛けと改行のある表
 
